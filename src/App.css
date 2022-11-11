@@ -12,22 +12,24 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 150vh;
+  /* height: 170vh; */
   width: 100%;
   background-color: grey;
 }
-
-.div_container > button {
+.btn_container {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  top: 15px;
+}
+
+.btn_container > button {
   border: none;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 2px #e4e4e4;
+  box-shadow: 0 2px 2px #000;
   background-color: white;
   cursor: pointer;
   transition: 1s;
+  margin-bottom: 10px;
 }
 
 .div_container > button:hover {
@@ -37,12 +39,13 @@ body {
 
 .div_paper {
   padding: 30px;
-  height: 842px;
-  width: 565px;
+  height: 100%;
+  width: 594px;
   /* margin: 30px; */
   background-color: white;
   text-align: center;
   text-align: -webkit-center;
+  margin: 10% 0 10% 0;
 }
 
 .div_paper > div {
@@ -59,6 +62,7 @@ td,
 th {
   border: 1px solid black;
   border-collapse: collapse;
+  padding: 10px;
 }
 
 td {
@@ -66,6 +70,14 @@ td {
   text-overflow: ellipsis;
 }
 
-.th_style {
-  width: 211px;
+th {
+  width: 130px;
+}
+
+.td_style {
+  width: 230px;
+}
+
+button + button {
+  margin-left: 30px;
 }

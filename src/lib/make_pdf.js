@@ -1,66 +1,51 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-const makePdf = {
-  viewWithPdf: async () => {
-    // html to imageFile
-    const imageFile = await makePdf._converToImg();
+const makePdf = async (state) => {
+  const input = document.querySelector(".div_container > .div_paper");
+  await html2canvas(input, { logging: true, scale: 2 }).then((canvas) => {
+    const imgData = canvas.toDataURL("image/png");
 
-    // imageFile to Pdf
-    const pdf = makePdf._converToPdf(imageFile);
+    const imgWidth = 210; // 이미지 가로 길이(mm) A4 기준
+    const pageHeight = imgWidth * 1.4; // 출력 페이지 세로 길이 계산 A4 기준
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; //전체 canvas 길이
+    let heightLeft = imgHeight;
 
-    makePdf.sendToServer(pdf);
-  },
-  _converToImg: async () => {
-    // html to imageFile
-    const paper = document.querySelector(".div_container > .div_paper");
+    const doc = new jsPDF("p", "mm");
+    let position = 0;
 
-    const canvas = await html2canvas(paper, { scale: 4 });
-    const imageFile = canvas.toDataURL("image/png", 1.0);
+    // 첫 페이지 출력
+    doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
 
-    return imageFile;
-  },
-  _converToPdf: (imageFile) => {
-    // imageFile to pdf
+    // 한 페이지 이상일 경우 루프 돌면서 출력
+    while (heightLeft >= 10) {
+      position = heightLeft - imgHeight;
+      doc.addPage();
+      doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
 
-    const doc = new jsPDF("p", "pt", "a4");
+    if (state === "save") {
+      doc.save("test.pdf");
+    }
 
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
+    if (state === "print") {
+      doc.autoPrint();
 
-    doc.addImage(imageFile, "JPEG", 0, 0, pageWidth, pageHeight);
+      const hiddFrame = document.createElement("iframe");
+      hiddFrame.style.width = "0.1px";
+      hiddFrame.style.height = "0.1px";
+      hiddFrame.style.opacity = "0.01";
 
-    // doc.save("test.pdf")
+      hiddFrame.src = doc.output("bloburl");
+      document.body.appendChild(hiddFrame);
+    }
 
-    window.open(doc.output("bloburl"));
-
-    const pdf = new File([doc.output("blob")], "test.pdf", {
-      type: "application/pdf",
-    });
-
-    return pdf;
-  },
-  // _sendToServer: async (pdf) => {
-  //     const formData = new FormData();
-  //     formData.append("file", pdf);
-  //     formData.append("type", "pdf");
-  //     formData.append("name", "test");
-
-  //     const res = await axios.post("/pdf/upload_file", formData, {
-  //         headers: {
-  //             "Content-Type": "multipart/form-data",
-  //         },
-  //     });
-
-  //     if (res.data.code === 1) {
-  //         window.open(`${util.mode()}${res.data.link}`);
-  //     }
-  //     console.log({ res });
-
-  //     setTimeout(() => {
-  //         makePdf._isLoading = false;
-  //     }, 2000);
-  // }
+    if (state === "view") {
+      window.open(doc.output("bloburl"));
+    }
+  });
 };
 
 export default makePdf;
