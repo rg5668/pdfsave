@@ -5,6 +5,7 @@
 
 body {
   margin: 0;
+  font-size: 13px;
 }
 
 .div_container {
@@ -12,7 +13,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* height: 170vh; */
   width: 100%;
   background-color: grey;
 }
@@ -39,9 +39,8 @@ body {
 
 .div_paper {
   padding: 30px;
-  height: 100%;
-  width: 594px;
-  /* margin: 30px; */
+  /* height: 820px; */
+  width: 564px;
   background-color: white;
   text-align: center;
   text-align: -webkit-center;
@@ -54,7 +53,7 @@ body {
 
 table {
   width: 100%;
-  table-layout: fixed;
+  height: 750px;
 }
 
 table,
@@ -63,19 +62,12 @@ th {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 10px;
-}
-
-td {
-  word-wrap: break-word;
-  text-overflow: ellipsis;
+  table-layout: fixed;
 }
 
 th {
-  /* width: 130px; */
-}
-
-.td_style {
-  width: 230px;
+  width: 100px;
+  background-color: lightgray;
 }
 
 button + button {
