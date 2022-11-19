@@ -9,15 +9,13 @@ const PdfTestForm = () => {
 
   const testPrintSave = useCallback(
     (state) => {
-      if (state === "print") {
-        setIsPrintState(true);
+      if (state === "save" || state === "view") {
+        setIsPrintState(false);
         setData(state);
         testPdf(state, target.current, isPrintState, printTarget.current);
       }
-
-      if (state === "save" || state === "view") {
-        console.log(isPrintState);
-        setIsPrintState(false);
+      if (state === "print") {
+        setIsPrintState(true);
         setData(state);
         testPdf(state, target.current, isPrintState, printTarget.current);
       }

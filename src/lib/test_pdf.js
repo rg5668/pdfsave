@@ -30,7 +30,6 @@ const testPdf = (state, target, isPrintState, printTarget) => {
 
   if (state === "print" && isPrintState) {
     doc.autoPrint();
-    console.log(isPrintState);
     hideFrame.src = doc.output("bloburl");
     printTarget.appendChild(hideFrame);
   }
@@ -43,7 +42,7 @@ const testPdf = (state, target, isPrintState, printTarget) => {
     window.open(doc.output("bloburl"));
   }
 
-  if ((state === "save" || state === "view") && !isPrintState) {
+  if (state === "save" && state === "view" && !isPrintState) {
     printTarget.removeChild(hideFrame);
   }
 };
