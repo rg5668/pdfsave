@@ -1,39 +1,23 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import testPdf from "../lib/test_pdf";
+import React, { useRef } from "react";
+import useTest from "../hooks/useTest";
 
 const PdfTestForm = () => {
   const target = useRef(null);
   const printTarget = useRef(null);
-  const [data, setData] = useState();
-  const [isPrintState, setIsPrintState] = useState(false);
 
-  const testPrintSave = useCallback(
-    (state) => {
-      if (state === "save" || state === "view") {
-        setIsPrintState(false);
-        setData(state);
-        testPdf(state, target.current, isPrintState, printTarget.current);
-      }
-      if (state === "print") {
-        setIsPrintState(true);
-        setData(state);
-        testPdf(state, target.current, isPrintState, printTarget.current);
-      }
-    },
-    [isPrintState]
-  );
+  const { printSaveViewFunc, isPrintState } = useTest({
+    target: target,
+    printTarget: printTarget,
+  });
 
-  useEffect(() => {
-    if (!target.current || !printTarget.current) return;
-    testPrintSave(data);
-  }, [data, testPrintSave]);
+  console.log(isPrintState);
 
   return (
     <div className="div_container">
       <div className="btn_container">
-        <button onClick={() => testPrintSave("save")}>pdf 저장</button>
-        <button onClick={() => testPrintSave("print")}>pdf 프린트</button>
-        <button onClick={() => testPrintSave("view")}>pdf 보기</button>
+        <button onClick={() => printSaveViewFunc("save")}>pdf 저장</button>
+        <button onClick={() => printSaveViewFunc("print")}>pdf 프린트</button>
+        <button onClick={() => printSaveViewFunc("view")}>pdf 보기</button>
       </div>
       <div className="div_paper">
         <h2>작업 일지</h2>

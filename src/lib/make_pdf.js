@@ -1,6 +1,8 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
+// 캡처를 통해 pdf로 만드는 것 글씨가 텍스트가 길어지면 짤리는 이슈가 있음
+
 const makePdf = async (state) => {
   const input = document.querySelector(".div_container > .div_paper");
   await html2canvas(input, { logging: true, scale: 2 }).then((canvas) => {
